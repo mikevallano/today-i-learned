@@ -16,7 +16,7 @@ class ReflectionsController < ApplicationController
 
   # GET /reflections/new
   def new
-    @reflection = Reflection.new
+    @reflection = current_user.reflections.build
   end
 
   # GET /reflections/1/edit
@@ -26,7 +26,7 @@ class ReflectionsController < ApplicationController
   # POST /reflections
   # POST /reflections.json
   def create
-    @reflection = Reflection.new(reflection_params)
+    @reflection = current_user.reflections.build(reflection_params)
 
     respond_to do |format|
       if @reflection.save
