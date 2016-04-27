@@ -1,11 +1,12 @@
 class ReflectionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_reflection, only: [:show, :edit, :update, :destroy]
+  before_action :restrict_acccess_to_reflection_owner, only: [:show, :edit, :update, :destroy]
 
   # GET /reflections
   # GET /reflections.json
   def index
-    @reflections = Reflection.all
+    @reflections = current_user.reflections
   end
 
   # GET /reflections/1
@@ -71,5 +72,11 @@ class ReflectionsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def reflection_params
       params.require(:reflection).permit(:title, :body, :user_id)
+    end
+
+    def restrict_acccess_to_reflection_owner
+      unless @reflection.user == current_user
+        redirect_to reflections_path
+      end
     end
 end

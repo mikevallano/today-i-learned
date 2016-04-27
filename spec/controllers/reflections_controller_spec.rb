@@ -11,7 +11,7 @@ RSpec.describe ReflectionsController, type: :controller do
   let(:current_user) { login_with user }
   let(:current_user2) { login_with user2 }
   let(:invalid_user) { login_with nil }
-  let(:valid_attributes) { {title: reflection_title, user_id: user.id} }
+  let(:valid_attributes) { FactoryGirl.attributes_for(:reflection, user_id: user.id) }
   let(:invalid_attributes) { {title: nil} }
   let(:new_attributes) { FactoryGirl.attributes_for(:reflection, title: "new title", body: "new body") }
 
@@ -64,19 +64,19 @@ RSpec.describe ReflectionsController, type: :controller do
       context "with valid params" do
         it "creates a new Reflection" do
           expect {
-            post :create, { :reflection => valid_attributes, user_id: user.to_param }
+            post :create, { :reflection => valid_attributes }
           }.to change(Reflection, :count).by(1)
         end
 
         it "assigns a newly created reflection as @reflection" do
-          post :create, { :reflection => valid_attributes, user_id: user.to_param }
+          post :create, { :reflection => valid_attributes }
           expect(assigns(:reflection)).to be_a(Reflection)
           expect(assigns(:reflection)).to be_persisted
         end
 
         it "redirects to the created reflection" do
           post :create, { :reflection => valid_attributes, user_id: user.to_param }
-          expect(response).to redirect_to(reflection_path(reflection))
+          expect(response).to redirect_to(Reflection.last)
         end
 
       end
@@ -227,14 +227,14 @@ RSpec.describe ReflectionsController, type: :controller do
       before(:example) do
         get :show, { :id => reflection2.to_param, user_id: user2.to_param }
       end
-        it { is_expected.to redirect_to reflection_path(reflection) }
+        it { is_expected.to redirect_to reflections_path }
     end
 
     describe "GET #edit" do
       before(:example) do
         get :edit, { :id => reflection2.to_param, user_id: user2.to_param }
       end
-     it { is_expected.to redirect_to reflection_path(reflection) }
+     it { is_expected.to redirect_to reflections_path }
     end
 
     describe "PUT #update" do
@@ -244,14 +244,14 @@ RSpec.describe ReflectionsController, type: :controller do
           put :update, { user_id: user2.to_param, :id => reflection2.to_param, :reflection => new_attributes }
         end
 
-       it { is_expected.to redirect_to reflection_path(reflection) }
+       it { is_expected.to redirect_to reflections_path }
       end
 
       context "with invalid params" do
         before(:example) do
           put :update, { user_id: user2.to_param, :id => reflection2.to_param, :reflection => FactoryGirl.attributes_for(:invalid_reflection) }
         end
-        it { is_expected.to redirect_to reflection_path(reflection) }
+        it { is_expected.to redirect_to reflections_path }
       end
     end
 
