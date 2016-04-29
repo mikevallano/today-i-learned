@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
     username_changed?
   end
 
+  def last_reflection_date
+    reflections.last.created_at.to_date.stamp("June 1st")
+  end
+
   def reflected_today?
     reflections.last.created_at.to_date == Date.today
   end

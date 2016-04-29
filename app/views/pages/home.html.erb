@@ -2,16 +2,20 @@
 
   <% if current_user %>
     <h1>Welcome <%= current_user.username %></h1>
-    <h2>Your current streak is <%= pluralize(current_user.current_streak, "day") %>.</h2>
-    <% if current_user.reflected_today? %>
-      <p>Great job reflecting today. <%= link_to "Add another one if you'd like.", new_reflection_path, id: "additional_reflection_link_homepage" %></p>
-    <% else %>
-      <p><%= link_to "Add your reflection for today!", new_reflection_path, id: "first_reflection_link_homepage" %></p>
-    <% end %>
-  <% else %>
+    <% if !current_user.reflections.any? %>
+      <h2><%= link_to "Enter your first reflection", new_reflection_path, id: "first_reflection_link_homepage" %>
+     <% else %>
+      <h2>Your current streak is <%= pluralize(current_user.current_streak, "day") %>.</h2>
+      <% if current_user.reflected_today? %>
+        <p>Great job reflecting today. <%= link_to "Add another one if you'd like.", new_reflection_path, id: "additional_reflection_link_homepage" %></p>
+      <% else %> <!-- # if current_user.reflected_today? -->
+        <p>Your last reflection was entered on <%= current_user.last_reflection_date %><%= link_to "Add your reflection for today!", new_reflection_path, id: "add_reflection_link_homepage" %></p>
+      <% end %> <!-- # if current_user.reflected_today? -->
+    <% end %> <!-- if !current_user.reflections.any?  -->
+  <% else %> <!-- # if current_user  -->
     <h1>Welcome to Today I Learned!</h1>
     <p>This site lets you track daily reflections to help you reinforce your learning</p>
-  <% end %>
+  <% end %> <!-- # if current_user  -->
 
 
 </div>
