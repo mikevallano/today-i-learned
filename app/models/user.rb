@@ -25,18 +25,23 @@ class User < ActiveRecord::Base
     reflections.last.created_at.to_date == Date.today
   end
 
-
   def current_streak
     days_reflected = reflections.order("created_at DESC").pluck(:created_at).map(&:to_date).uniq
     streak = 0
-    days_reflected.each_with_index do | d, index |
-      if d >= (index +1).days.ago.to_date
-        streak += 1
-      else
-        break
+    day_counter = days_reflected.first
+    if days_reflected.first < 1.day.ago.to_date
+      streak
+    else
+      days_reflected.each do |d|
+        if d == day_counter
+          streak += 1
+          day_counter = day_counter.yesterday.to_date
+        else
+          break
+        end
       end
     end
     streak
-  end
+  end #current_streak
 
 end #final

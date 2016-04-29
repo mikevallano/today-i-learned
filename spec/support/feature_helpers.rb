@@ -29,4 +29,12 @@ module FeatureHelpers
     @current_user = User.find_by_email(user.email)
   end
 
+  def all_reflections
+    reflection
+    reflection_1_day_ago
+    reflection_2_days_ago
+    reflection_3_days_ago
+    reflection_5_days_ago
+  end
+
 end

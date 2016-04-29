@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :reflection do
-    title { FFaker::HipsterIpsum.phrase }
+    title { SecureRandom.urlsafe_base64(25) }
     body { FFaker::HipsterIpsum.paragraph(2) }
     user
 
