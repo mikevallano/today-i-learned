@@ -26,11 +26,26 @@ RSpec.feature "Reflections feature spec", :type => :feature do
       expect(current_url).to eq(reflection_url(Reflection.last))
     end
 
-    scenario "shows current streak" do
+    scenario "shows current streak up to missing day" do
       all_reflections
       visit root_path
 
       expect(page).to have_content("4 days")
+    end
+
+    scenario "shows streak of zero if a reflection has not been created in the last day" do
+      reflection_2_days_ago
+      reflection_3_days_ago
+
+      visit root_path
+      expect(page).to have_content("0 days")
+    end
+
+    scenario "shows streak of 1 day if last reflection was yesterday" do
+      reflection_1_day_ago
+
+      visit root_path
+      expect(page).to have_content("1 day")
     end
 
   end #feature "Users create, edit, update, view, and destroy reflections" do
