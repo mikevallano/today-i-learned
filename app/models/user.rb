@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
     username_changed?
   end
 
+  def reflected_today?
+    reflections.last.created_at.to_date == Date.today
+  end
+
 
   def current_streak
     days_reflected = reflections.order("created_at DESC").pluck(:created_at).map(&:to_date).uniq

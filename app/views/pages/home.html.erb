@@ -1,4 +1,17 @@
 <div class="container">
-  <h1>Pages#home</h1>
-  <p>Find me in app/views/pages/home.html.erb</p>
+
+  <% if current_user %>
+    <h1>Welcome <%= current_user.username %></h1>
+    <h2>Your current streak is <%= pluralize(current_user.current_streak, "day") %>.</h2>
+    <% if current_user.reflected_today? %>
+      <p>Great job reflecting today. <%= link_to "Add another one if you'd like.", new_reflection_path, id: "additional_reflection_link_homepage" %></p>
+    <% else %>
+      <p><%= link_to "Add your reflection for today!", new_reflection_path, id: "first_reflection_link_homepage" %></p>
+    <% end %>
+  <% else %>
+    <h1>Welcome to Today I Learned!</h1>
+    <p>This site lets you track daily reflections to help you reinforce your learning</p>
+  <% end %>
+
+
 </div>
