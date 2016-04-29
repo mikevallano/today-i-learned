@@ -10,4 +10,16 @@ class Reflection < ActiveRecord::Base
 
   validates :title, :presence => true, length: { maximum: 100 }
 
+  def self.by_year(year)
+    where('extract(year from created_at) = ?', year)
+  end
+
+  def self.by_month(month)
+    where('extract(month from created_at) = ?', month)
+  end
+
+  def self.by_day(day)
+    where('extract(day from created_at) = ?', day)
+  end
+
 end

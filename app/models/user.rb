@@ -17,4 +17,18 @@ class User < ActiveRecord::Base
     username_changed?
   end
 
-end
+
+  def current_streak
+    days_reflected = reflections.order("created_at DESC").pluck(:created_at).map(&:to_date).uniq
+    streak = 0
+    days_reflected.each_with_index do | d, index |
+      if d >= (index +1).days.ago.to_date
+        streak += 1
+      else
+        break
+      end
+    end
+    streak
+  end
+
+end #final

@@ -1,0 +1,7 @@
+Reflection.where("created_at > TIMESTAMP WITH TIME ZONE '#{Time.zone.parse('2016-04-01 12:00pm')}'")
+
+Reflection.where("MONTH(date_column) = 12")
+
+Reflection.where('extract(year from created_at) = ?', 2016)
+
+Reflection.where('extract(month from created_at) = ?', 04)
