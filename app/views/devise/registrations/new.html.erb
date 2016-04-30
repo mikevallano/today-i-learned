@@ -19,11 +19,6 @@
       <%= time_zone_select( "user", 'time_zone', ActiveSupport::TimeZone.us_zones, {class: "form-control"} ) %>
     </div>
 
-
-<!--     time_zone_select( "user", 'time_zone', ActiveSupport::TimeZone.us_zones, default: "Pacific Time (US & Canada)")
-
-time_zone_select( "user", 'time_zone', [ ActiveSupport::TimeZone['Alaska'], ActiveSupport::TimeZone['Hawaii'] ]) -->
-
     <div class="field">
       <%= f.label :password %>
       <% if @minimum_password_length %>
