@@ -18,18 +18,20 @@ class User < ActiveRecord::Base
   end
 
   def last_reflection_date
-    reflections.last.created_at.to_date.stamp("June 1st")
+    reflections.last.created_at.in_time_zone(time_zone).to_date.stamp("June 1st")
   end
 
   def reflected_today?
-    reflections.last.created_at.to_date == Date.today
+    last_reflection_date == Time.current.in_time_zone(time_zone).to_date.stamp("June 1st")
   end
 
   def current_streak
-    days_reflected = reflections.order("created_at DESC").pluck(:created_at).map(&:to_date).uniq
+    days_reflected = reflections.order("created_at DESC").pluck(:created_at).map do |created_at|
+      created_at.in_time_zone(time_zone).to_date
+    end.uniq
     streak = 0
     day_counter = days_reflected.first
-    if days_reflected.first < 1.day.ago.to_date
+    if days_reflected.first <  Time.current.in_time_zone(time_zone).to_date.yesterday
       streak
     else
       days_reflected.each do |d|
